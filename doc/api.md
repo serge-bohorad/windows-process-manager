@@ -252,7 +252,7 @@ Retrieves timing information for the specified process.
 
 ### Example
 ```javascript
-const { getProcessTimes } = require('windows-process-manager')
+const { getCurrentProcessHandle, getProcessTimes } = require('windows-process-manager')
 
 try {
   const processHandle = getCurrentProcessHandle()
@@ -266,3 +266,35 @@ try {
 ### Useful references
 [GetProcessTimes](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getprocesstimes), 
 [SYSTEMTIME structure](https://docs.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-systemtime)
+
+## getExitCodeProcess
+```typescript
+function getExitCodeProcess(processHandle: Buffer): number {}
+```
+
+Retrieves the termination status of the specified process.
+
+### Parameters
+
+#### Required
+*Buffer* `processHandle` - A handle to the process. 
+
+### Return value
+`number` Exit code.
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Example
+```javascript
+const { getCurrentProcessHandle, getExitCodeProcess } = require('windows-process-manager')
+
+try {
+  const processHandle = getCurrentProcessHandle()
+  const exitCode = getExitCodeProcess(processHandle)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[GetExitCodeProcess](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getexitcodeprocess)
+
