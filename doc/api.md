@@ -1,7 +1,7 @@
 > ⚠ Note that all functions may throw an error. Call functions only in the **try catch** block, or use the **catch** function if a function returns a promise.
 
 ## createProcess
-```typescript
+```ts
 async function createProcess(exeFile: string, options?: Options): Promise<ProcessInfo>
 ```
 Creates a new process and its primary thread.
