@@ -316,11 +316,11 @@ Reserves, commits, or changes the state of a region of memory within the virtual
 #### Optional 
 *object* `options`
 
-| Name           | Type       | Default                  | Description                                   |
-| -------------- | ---------- | ------------------------ | --------------------------------------------- |
-| address        | `Buffer`   | Empty Buffer             | The starting address for the region of pages  |
+| Name           | Type       | Default                   | Description                                   |
+| -------------- | ---------- | ------------------------- | --------------------------------------------- |
+| address        | `Buffer`   | Empty Buffer              | The starting address for the region of pages  |
 | allocationType | `number`   | MEM_RESERVE \| MEM_COMMIT | The type of memory allocation                 |
-| protectType    | `number`   | PAGE_READWRITE           | The memory protection for the region of pages |
+| protectType    | `number`   | PAGE_READWRITE            | The memory protection for the region of pages |
 
 ### Return value
 `Buffer` Allocated region
@@ -343,3 +343,43 @@ try {
 ### Useful references
 [VirtualAllocEx](https://docs.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualallocex),
 [Memory Protection Constants](https://docs.microsoft.com/ru-ru/windows/win32/memory/memory-protection-constants)
+
+## virtualFreeEx
+```typescript
+export function virtualFreeEx(processHandle: Buffer, address: Buffer, size: number, freeType?: number): void {}
+```
+
+Releases, decommits, or releases and decommits a region of memory within the virtual address space of a specified process.
+
+### Parameters
+
+#### Required
+*Buffer* `processHandle` - The process handle.     
+*Buffer* `address` - The starting address of the region of memory to be freed.  
+*number* `size` - The size of the region of memory to free, in bytes. 
+
+#### Optional
+*number* `freeType` - The type of free operation.
+**Default:** MEM_RELEASE.
+
+### Return value
+`void`
+
+**Note:** if the function failed, an exception will be thrown.
+  
+### Example
+```javascript
+const { getCurrentProcessHandle, virtualAllocEx, virtualFreeEx } = require('windows-process-manager')
+
+try {
+  const buffer = Buffer.from('Hello world', 'utf16le')
+  const processHandle = getCurrentProcessHandle()
+  const allocatedRegion = virtualAllocEx(processHandle, buffer.byteLength)
+  virtualFreeEx(processHandle, allocatedRegion, 0)
+} catch (e) {
+  console.log(e)
+}
+```
+
+### Useful references
+[VirtualFreeEx](https://docs.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualfreeex)
