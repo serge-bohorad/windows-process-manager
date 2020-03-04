@@ -4,12 +4,17 @@
 ```ts
 async function createProcess(exeFile: string, options?: Options): Promise<ProcessInfo> {}
 ```
+
 Creates a new process and its primary thread.
+
 ### Parameters
+
 #### Required
 *string* `exeFile` - Full path to an .exe file.  
+
 #### Optional 
-*object* `options`    
+*object* `options`
+
 | Name           | Type       | Default       | Description                                                           |
 | -------------- | ---------- | ------------- | --------------------------------------------------------------------- |
 | args           | `string`   | ""            | Command line to be executed                                           |
@@ -18,11 +23,14 @@ Creates a new process and its primary thread.
 | cwd            | `string`   | process.cwd() | Full path to the current directory for the process                    |
 
 ### Return value
-`Promise<object>`
+`Promise<object>` Process information
   - *number* `processId` - Process identifier.
   - *number* `threadId` - Identifier of the main thread.
   - *Buffer* `processHandle` - Process handle.
-  - *Buffer* `threadHandle` - Handle of the main thread.
+  - *Buffer* `threadHandle` - Handle of the main thread. 
+
+**Note:** if the function failed, an exception will be thrown.
+  
 ### Example
 ```javascript
 const { DETACHED_PROCESS, CREATE_NO_WINDOW, createProcess } = require('windows-process-manager')
@@ -35,6 +43,7 @@ try {
   console.log(e)
 }
 ```
+
 ### Useful references
 [CreateProcessW](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw),
 [Process Creation Flags](https://docs.microsoft.com/ru-ru/windows/win32/procthread/process-creation-flags)
@@ -43,16 +52,22 @@ try {
 ```ts
 async function terminateProcess(processHandle: Buffer, exitCode?: number): Promise<void> {}
 ```
+
 Terminates the specified process and all of its threads.
 ### Parameters
+
 #### Required
-*Buffer* `processHandle` - A handle to the process to be terminated.  
+*Buffer* `processHandle` - A handle to the process to be terminated. 
+
 #### Optional 
 *number* `exitCode` - The exit code to be used by the process and threads terminated as a result of this call.  
 **Default:** 0.
 
 ### Return value
 `Promise<void>`
+
+**Note:** if the function failed, an exception will be thrown.
+
 ### Example
 ```javascript
 const { createProcess, terminateProcess } = require('windows-process-manager')
@@ -64,3 +79,45 @@ try {
   console.log(e)
 }
 ```
+### Useful references
+[TerminateProcess](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-terminateprocess)
+
+## openProcess
+```ts
+export async function openProcess(processId: number, options?: Options): Promise<Buffer> {}
+```
+
+Opens an existing local process object.
+
+### Parameters
+
+#### Required
+*number* `processId` - The identifier of the local process to be opened.  
+
+#### Optional 
+*object* `options`
+
+| Name           | Type       | Default            | Description                             |
+| -------------- | ---------- | ------------------ | --------------------------------------- |
+| accessRights   | `number`   | PROCESS_ALL_ACCESS | The access to the process object        |
+| inheritHandles | `boolean`  | false              | Inheritance flag of the current process |
+
+### Return value
+`Promise<Buffer>` An open handle to the specified process.  
+
+**Note:** if the function failed, an exception will be thrown.
+  
+### Example
+```javascript
+const { PROCESS_VM_OPERATION, openProcess } = require('windows-process-manager')
+
+try {
+  const processHandle = await openProcess(process.pid, { accessRights: PROCESS_VM_OPERATION })
+} catch (e) {
+  console.log(e)
+}
+```
+
+### Useful references
+[OpenProcess](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-openprocess),
+[Process Security and Access Rights](https://docs.microsoft.com/ru-ru/windows/win32/procthread/process-security-and-access-rights)
