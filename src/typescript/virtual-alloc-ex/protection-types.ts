@@ -1,0 +1,13 @@
+export const PAGE_EXECUTE = 0x10
+export const PAGE_EXECUTE_READ = 0x20
+export const PAGE_EXECUTE_READWRITE = 0x40
+export const PAGE_EXECUTE_WRITECOPY = 0x80
+export const PAGE_NOACCESS = 0x01
+export const PAGE_READONLY = 0x02
+export const PAGE_READWRITE = 0x04
+export const PAGE_WRITECOPY = 0x08
+export const PAGE_TARGETS_INVALID = 0x40000000
+export const PAGE_TARGETS_NO_UPDATE = 0x40000000
+export const PAGE_GUARD = 0x100
+export const PAGE_NOCACHE = 0x200
+export const PAGE_WRITECOMBINE = 0x400

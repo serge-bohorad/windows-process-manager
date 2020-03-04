@@ -1,0 +1,63 @@
+{
+  "name": "windows-process-manager",
+  "author": "Randell Hart (irandellhart@gmail.com)",
+  "version": "1.0.0-beta",
+  "keywords": [
+    "node",
+    "native",
+    "addon",
+    "c",
+    "c++",
+    "windows",
+    "gyp",
+    "x64",
+    "x86",
+    "binary",
+    "inject",
+    "process",
+    "memory",
+    "thread"
+  ],
+  "files": [
+    "out-tsc/dist"
+  ],
+  "repository": "git@github.com:iRandell/windows-process-manager.git",
+  "homepage": "https://github.com/iRandell/windows-process-manager",
+  "bugs": {
+    "url": "https://github.com/iRandell/windows-process-manager/issues"
+  },
+  "types": "out-tsc/dist/index.d.ts",
+  "license": "MIT",
+  "description": "Node.js native addon for working with processes on Windows",
+  "main": "out-tsc/dist/index.js",
+  "scripts": {
+    "start": "npm-run-all clean:dist compile:dev",
+    "build": "npm-run-all clean:dist compile:prod",
+    "start:test": "npm-run-all clean:test compile:test:dev",
+    "test": "npm-run-all clean:test compile:test build:cpp jest",
+    "compile:dev": "tsc -w",
+    "compile:prod": "tsc -b",
+    "compile:test:dev": "tsc -w -p tsconfig.test.json",
+    "compile:test": "tsc -p tsconfig.test.json",
+    "jest": "jest",
+    "build:cpp": "node-gyp rebuild",
+    "debug:cpp": "node-gyp rebuild --debug",
+    "clean:dist": "rimraf out-tsc/dist",
+    "clean:test": "rimraf out-tsc/test"
+  },
+  "dependencies": {
+    "bindings": "^1.5.0",
+    "node-addon-api": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.1.3",
+    "@types/node": "^13.7.4",
+    "jest": "^25.1.0",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "typescript": "^3.8.2"
+  },
+  "peerDependencies": {
+    "@types/node": ">=10.0.0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug x64",
+      "preLaunchTask": "npm: debug:cpp",
+      "program": "C:/Program Files/nodejs/node",
+      "args": ["${workspaceFolder}/out/dist/index.js"]
+    }
+  ]
+}

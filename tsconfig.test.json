@@ -1,0 +1,14 @@
+{
+  "include": ["src/typescript/**/__test__"],
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "CommonJS",
+    "outDir": "out-tsc/test",
+    "rootDir": "src/typescript",
+    "moduleResolution": "node",
+    "strictNullChecks": true,
+    "noEmitOnError": true,
+    "lib": ["DOM", "ESNext"],
+    "baseUrl": "./"
+  }
+}

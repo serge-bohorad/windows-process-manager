@@ -1,0 +1,1 @@
+export const STILL_ACTIVE = 0x00000103

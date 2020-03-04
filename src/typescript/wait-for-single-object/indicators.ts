@@ -1,0 +1,3 @@
+export const WAIT_ABANDONED = 0x00000080
+export const WAIT_OBJECT_0 = 0x00000000
+export const WAIT_TIMEOUT = 0x00000102
