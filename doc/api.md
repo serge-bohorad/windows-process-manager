@@ -1,4 +1,6 @@
-> ⚠ Note that almost all functions may throw exceptions. If a function can throw exceptions, call function only in the **try catch** block, or use the **catch** if a function returns a promise.
+> ⚠ Note that almost all functions may throw exceptions. If a function can throw exceptions, call function only in the **try catch** block, or use the **catch** if a function returns a promise.  
+
+> ⚠ All functions use the Unicode version of winapi. If you use a Buffer from a string, encode the buffer with **utf16le**.
 
 ## createProcess
 ```typescript
@@ -10,7 +12,7 @@ Creates a new process and its primary thread.
 ### Parameters
 
 #### Required
-*string* `exeFile` - Full path to an .exe file.  
+*string* `exeFile` - The full path to an .exe file.  
 
 #### Optional 
 *object* `options`
@@ -298,3 +300,46 @@ try {
 ### Useful references
 [GetExitCodeProcess](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getexitcodeprocess)
 
+## virtualAllocEx
+```typescript
+function virtualAllocEx(processHandle: Buffer, size: number, options?: Options): Buffer {}
+```
+
+Reserves, commits, or changes the state of a region of memory within the virtual address space of a specified process.
+
+### Parameters
+
+#### Required
+*Buffer* `processHandle` - The process handle.   
+*number* `size` - The size of the region of memory to allocate, in bytes. 
+
+#### Optional 
+*object* `options`
+
+| Name           | Type       | Default                  | Description                                   |
+| -------------- | ---------- | ------------------------ | --------------------------------------------- |
+| address        | `Buffer`   | Empty Buffer             | The starting address for the region of pages  |
+| allocationType | `number`   | MEM_RESERVE \| MEM_COMMIT | The type of memory allocation                 |
+| protectType    | `number`   | PAGE_READWRITE           | The memory protection for the region of pages |
+
+### Return value
+`Buffer` Allocated region
+
+**Note:** if the function failed, an exception will be thrown.
+  
+### Example
+```javascript
+const { getCurrentProcessHandle, virtualAllocEx } = require('windows-process-manager')
+
+try {
+  const buffer = Buffer.from('Hello world', 'utf16le')
+  const processHandle = getCurrentProcessHandle()
+  const allocatedRegion = virtualAllocEx(processHandle, buffer.byteLength)
+} catch (e) {
+  console.log(e)
+}
+```
+
+### Useful references
+[VirtualAllocEx](https://docs.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualallocex),
+[Memory Protection Constants](https://docs.microsoft.com/ru-ru/windows/win32/memory/memory-protection-constants)
