@@ -1,7 +1,7 @@
 > ⚠ Note that all functions may throw an error. Call functions only in the **try catch** block, or use the **catch** function if a function returns a promise.
 
 ## createProcess
-```ts
+```typescript
 async function createProcess(exeFile: string, options?: Options): Promise<ProcessInfo> {}
 ```
 
@@ -49,7 +49,7 @@ try {
 [Process Creation Flags](https://docs.microsoft.com/ru-ru/windows/win32/procthread/process-creation-flags)
 
 ## terminateProcess
-```ts
+```typescript
 async function terminateProcess(processHandle: Buffer, exitCode?: number): Promise<void> {}
 ```
 
@@ -84,7 +84,7 @@ try {
 [TerminateProcess](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-terminateprocess)
 
 ## openProcess
-```ts
+```typescript
 export async function openProcess(processId: number, options?: Options): Promise<Buffer> {}
 ```
 
@@ -124,7 +124,7 @@ try {
 [Process Security and Access Rights](https://docs.microsoft.com/ru-ru/windows/win32/procthread/process-security-and-access-rights)
 
 ## closeHandle
-```ts
+```typescript
 function closeHandle(handle: Buffer): void {}
 ```
 
@@ -155,7 +155,7 @@ try {
 [CloseHandle](https://docs.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-closehandle)
 
 ## getProcessEntry
-```ts
+```typescript
 async function getProcessEntry(processName: string): Promise<ProcessEntry> {}
 ```
 
@@ -188,3 +188,28 @@ try {
 ```
 ### Useful references
 [PROCESSENTRY32W structure](https://docs.microsoft.com/ru-ru/windows/win32/api/tlhelp32/ns-tlhelp32-processentry32w)
+
+## getCurrentProcessHandle
+```typescript
+function getCurrentProcessHandle(): Buffer {}
+```
+
+Retrieves a pseudo handle for the current process. 
+
+### Return value
+`Buffer` The current process handle
+
+### Example
+```javascript
+const { getCurrentProcessHandle, terminateProcess } = require('windows-process-manager')
+
+try {
+  const processHandle = getCurrentProcessHandle()
+  await terminateProcess(processHandle)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[GetCurrentProcess](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentprocess)
+
