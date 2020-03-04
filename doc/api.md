@@ -18,7 +18,7 @@ Creates a new process and its primary thread.
 | cwd            | `string`   | process.cwd() | Full path to the current directory for the process                    |
 
 ### Return value
-*Promise\<object\>* `processInfo`
+`Promise<object>`
   - *number* `processId` - Process identifier.
   - *number* `threadId` - Identifier of the main thread.
   - *Buffer* `processHandle` - Process handle.
@@ -31,6 +31,35 @@ try {
   const processInfo = await createProcess('full/path/to/file.exe', {
     flags: DETACHED_PROCESS | CREATE_NO_WINDOW
   })
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[CreateProcessW](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw),
+[Process Creation Flags](https://docs.microsoft.com/ru-ru/windows/win32/procthread/process-creation-flags)
+
+## terminateProcess
+```ts
+async function terminateProcess(processHandle: Buffer, exitCode?: number): Promise<void> {}
+```
+Terminates the specified process and all of its threads.
+### Parameters
+#### Required
+*Buffer* `processHandle` - A handle to the process to be terminated.  
+#### Optional 
+*number* `exitCode` - The exit code to be used by the process and threads terminated as a result of this call.  
+**Default:** 0.
+
+### Return value
+`Promise<void>`
+### Example
+```javascript
+const { createProcess, terminateProcess } = require('windows-process-manager')
+
+try {
+  const { processHandle } = await createProcess('full/path/to/file.exe')
+  await terminateProcess(processHandle)
 } catch (e) {
   console.log(e)
 }
