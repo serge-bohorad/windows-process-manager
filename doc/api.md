@@ -24,10 +24,10 @@ Creates a new process and its primary thread.
 
 ### Return value
 `Promise<object>` Process information
-  - *number* `processId` - Process identifier.
-  - *number* `threadId` - Identifier of the main thread.
-  - *Buffer* `processHandle` - Process handle.
-  - *Buffer* `threadHandle` - Handle of the main thread. 
+  - *number* `processId` - The process identifier.
+  - *number* `threadId` - The main thread identifier.
+  - *Buffer* `processHandle` - The process handle.
+  - *Buffer* `threadHandle` - The main thread handle. 
 
 **Note:** if the function failed, an exception will be thrown.
   
@@ -54,6 +54,7 @@ async function terminateProcess(processHandle: Buffer, exitCode?: number): Promi
 ```
 
 Terminates the specified process and all of its threads.
+
 ### Parameters
 
 #### Required
@@ -121,3 +122,34 @@ try {
 ### Useful references
 [OpenProcess](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-openprocess),
 [Process Security and Access Rights](https://docs.microsoft.com/ru-ru/windows/win32/procthread/process-security-and-access-rights)
+
+## closeHandle
+```ts
+function closeHandle(handle: Buffer): void {}
+```
+
+Closes an open object handle.
+
+### Parameters
+
+#### Required
+*Buffer* `handle` - A valid handle to an open object. 
+
+### Return value
+`void`
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Example
+```javascript
+const { openProcess, closeHandle } = require('windows-process-manager')
+
+try {
+  const processHandle = await openProcess(process.pid)
+  closeHandle(processHandle)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[CloseHandle](https://docs.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-closehandle)
