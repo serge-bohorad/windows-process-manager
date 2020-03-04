@@ -1,4 +1,4 @@
-> ⚠ Note that all functions may throw an error. Call functions only in the **try catch** block, or use the **catch** function if a function returns a promise.
+> ⚠ Note that almost all functions may throw exceptions. If a function can throw exceptions, call function only in the **try catch** block, or use the **catch** if a function returns a promise.
 
 ## createProcess
 ```typescript
@@ -23,7 +23,9 @@ Creates a new process and its primary thread.
 | cwd            | `string`   | process.cwd() | Full path to the current directory for the process                    |
 
 ### Return value
-`Promise<object>` Process information
+`Promise<ProcessInfo>` Process information
+
+`ProcessInfo`
   - *number* `processId` - The process identifier.
   - *number* `threadId` - The main thread identifier.
   - *Buffer* `processHandle` - The process handle.
@@ -167,7 +169,9 @@ Retrieves system entry of a specific process.
 *string* `processName` - Process name. 
 
 ### Return value
-`Promise<object>` Process entry.
+`Promise<ProcessEntry>` Process system entry.
+
+`ProcessEntry`
   - *number* `processId` - The process identifier.
   - *number* `threadCount` - The number of execution threads started by the process.
   - *number* `parentProcessId` - The identifier of the process that created this process.
@@ -213,3 +217,52 @@ try {
 ### Useful references
 [GetCurrentProcess](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentprocess)
 
+## getProcessTimes
+```typescript
+async function getProcessTimes(processHandle: Buffer): Promise<Times> {}
+```
+
+Retrieves timing information for the specified process.
+
+### Parameters
+
+#### Required
+*Buffer* `processHandle` - The process handle. 
+
+### Return value
+`Promise<Times>` Process times.
+
+`Time`
+  - *number* `year` - The year. 1601 through 30827.
+  - *number* `month` - The month. 1 through 12.
+  - *number* `dayOfWeek` - The day of the week. 0 through 6.
+  - *number* `day` - The day of the month. 1 through 31.
+  - *number* `hour` - The hour. 0 through 23.
+  - *number* `minute` - The minute. 0 through 59.
+  - *number* `second` - The second. 0 through 59.
+  - *number* `milliseconds` - The millisecond. 0 through 999. 
+  
+`Times`
+  - *Time* `creationTime` - The creation time of the process.
+  - *Time* `exitTime` - The exit time of the process.
+  - *Time* `kernelTime` - The amount of time that the process has executed in kernel mode.
+  - *Time* `userTime` - The amount of time that the process has executed in user mode
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Example
+```javascript
+const { getProcessTimes } = require('windows-process-manager')
+
+try {
+  const processHandle = getCurrentProcessHandle()
+  const { creationTime } = await getProcessTimes(processHandle)
+  const { hour, minute, second } = creationTime
+  console.log(`Creation time: ${hour}:${minute}:${second}`)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[GetProcessTimes](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getprocesstimes), 
+[SYSTEMTIME structure](https://docs.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-systemtime)
