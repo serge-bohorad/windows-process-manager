@@ -153,3 +153,38 @@ try {
 ```
 ### Useful references
 [CloseHandle](https://docs.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-closehandle)
+
+## getProcessEntry
+```ts
+async function getProcessEntry(processName: string): Promise<ProcessEntry> {}
+```
+
+Retrieves system entry of a specific process.
+
+### Parameters
+
+#### Required
+*string* `processName` - Process name. 
+
+### Return value
+`Promise<object>` Process entry.
+  - *number* `processId` - The process identifier.
+  - *number* `threadCount` - The number of execution threads started by the process.
+  - *number* `parentProcessId` - The identifier of the process that created this process.
+  - *number* `threadPriority` - The base priority of any threads created by this process. 
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Example
+```javascript
+const { getProcessEntry } = require('windows-process-manager')
+
+try {
+  const { threadCount } = await getProcessEntry('process-name')
+  console.log('Thread count: ' + threadCount)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[PROCESSENTRY32W structure](https://docs.microsoft.com/ru-ru/windows/win32/api/tlhelp32/ns-tlhelp32-processentry32w)
