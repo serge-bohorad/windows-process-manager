@@ -2,7 +2,7 @@
 
 ## createProcess
 ```ts
-async function createProcess(exeFile: string, options?: Options): Promise<ProcessInfo>
+async function createProcess(exeFile: string, options?: Options): Promise<ProcessInfo> {}
 ```
 Creates a new process and its primary thread.
 ### Parameters
