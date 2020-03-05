@@ -9,6 +9,8 @@ async function createProcess(exeFile: string, options?: Options): Promise<Proces
 
 Creates a new process and its primary thread.
 
+**Note:** if the function failed, an exception will be thrown.
+
 ### Parameters
 
 #### Required
@@ -32,8 +34,6 @@ Creates a new process and its primary thread.
   - *number* `threadId` - The main thread identifier.
   - *Buffer* `processHandle` - The process handle.
   - *Buffer* `threadHandle` - The main thread handle. 
-
-**Note:** if the function failed, an exception will be thrown.
   
 ### Example
 ```javascript
@@ -59,6 +59,8 @@ async function terminateProcess(processHandle: Buffer, exitCode?: number): Promi
 
 Terminates the specified process and all of its threads.
 
+**Note:** if the function failed, an exception will be thrown.
+
 ### Parameters
 
 #### Required
@@ -70,8 +72,6 @@ Terminates the specified process and all of its threads.
 
 ### Return value
 `Promise<void>`
-
-**Note:** if the function failed, an exception will be thrown.
 
 ### Example
 ```javascript
@@ -94,6 +94,8 @@ export async function openProcess(processId: number, options?: Options): Promise
 
 Opens an existing local process object.
 
+**Note:** if the function failed, an exception will be thrown.
+
 ### Parameters
 
 #### Required
@@ -109,8 +111,6 @@ Opens an existing local process object.
 
 ### Return value
 `Promise<Buffer>` An open handle to the specified process.  
-
-**Note:** if the function failed, an exception will be thrown.
   
 ### Example
 ```javascript
@@ -134,6 +134,8 @@ function closeHandle(handle: Buffer): void {}
 
 Closes an open object handle.
 
+**Note:** if the function failed, an exception will be thrown.
+
 ### Parameters
 
 #### Required
@@ -141,8 +143,6 @@ Closes an open object handle.
 
 ### Return value
 `void`
-
-**Note:** if the function failed, an exception will be thrown.
 
 ### Example
 ```javascript
@@ -165,6 +165,8 @@ async function getProcessEntry(processName: string): Promise<ProcessEntry> {}
 
 Retrieves system entry of a specific process.
 
+**Note:** if the function failed, an exception will be thrown.
+
 ### Parameters
 
 #### Required
@@ -178,8 +180,6 @@ Retrieves system entry of a specific process.
   - *number* `threadCount` - The number of execution threads started by the process.
   - *number* `parentProcessId` - The identifier of the process that created this process.
   - *number* `threadPriority` - The base priority of any threads created by this process. 
-
-**Note:** if the function failed, an exception will be thrown.
 
 ### Example
 ```javascript
@@ -226,6 +226,8 @@ async function getProcessTimes(processHandle: Buffer): Promise<Times> {}
 
 Retrieves timing information for the specified process.
 
+**Note:** if the function failed, an exception will be thrown.
+
 ### Parameters
 
 #### Required
@@ -249,8 +251,6 @@ Retrieves timing information for the specified process.
   - *Time* `exitTime` - The exit time of the process.
   - *Time* `kernelTime` - The amount of time that the process has executed in kernel mode.
   - *Time* `userTime` - The amount of time that the process has executed in user mode
-
-**Note:** if the function failed, an exception will be thrown.
 
 ### Example
 ```javascript
@@ -276,6 +276,8 @@ function getExitCodeProcess(processHandle: Buffer): number {}
 
 Retrieves the termination status of the specified process.
 
+**Note:** if the function failed, an exception will be thrown.
+
 ### Parameters
 
 #### Required
@@ -283,8 +285,6 @@ Retrieves the termination status of the specified process.
 
 ### Return value
 `number` Exit code.
-
-**Note:** if the function failed, an exception will be thrown.
 
 ### Example
 ```javascript
@@ -307,6 +307,8 @@ function virtualAllocEx(processHandle: Buffer, size: number, options?: Options):
 
 Reserves, commits, or changes the state of a region of memory within the virtual address space of a specified process.
 
+**Note:** if the function failed, an exception will be thrown.
+
 ### Parameters
 
 #### Required
@@ -324,8 +326,6 @@ Reserves, commits, or changes the state of a region of memory within the virtual
 
 ### Return value
 `Buffer` Allocated region
-
-**Note:** if the function failed, an exception will be thrown.
   
 ### Example
 ```javascript
@@ -351,6 +351,8 @@ export function virtualFreeEx(processHandle: Buffer, address: Buffer, size: numb
 
 Releases, decommits, or releases and decommits a region of memory within the virtual address space of a specified process.
 
+**Note:** if the function failed, an exception will be thrown.
+
 ### Parameters
 
 #### Required
@@ -364,8 +366,6 @@ Releases, decommits, or releases and decommits a region of memory within the vir
 
 ### Return value
 `void`
-
-**Note:** if the function failed, an exception will be thrown.
   
 ### Example
 ```javascript
@@ -383,3 +383,46 @@ try {
 
 ### Useful references
 [VirtualFreeEx](https://docs.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualfreeex)
+
+## writeProcessMemory
+```typescript
+function writeProcessMemory(processHandle: Buffer, baseAddress: Buffer, data: Buffer, size: number): number {}
+```
+
+Writes data to an area of memory in a specified process.
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Parameters
+
+#### Required
+*Buffer* `processHandle` - A handle to the process.   
+*Buffer* `baseAddress` - The base address in the specified process to which data is written.    
+*Buffer* `data` - The buffer that contains data to be written in the address space of the specified process.   
+*number* `size` - The number of bytes to be written to the specified process.
+
+### Return value
+`number` The number of bytes transferred into the specified process.
+
+### Example
+```javascript
+const {
+  getCurrentProcessHandle,
+  virtualAllocEx,
+  writeProcessMemory,
+  virtualFreeEx
+} = require('windows-process-manager')
+
+try {
+  const buffer = Buffer.from('Hello world', 'utf16le')
+  const processHandle = getCurrentProcessHandle()
+  const allocatedRegion = virtualAllocEx(processHandle, buffer.byteLength)
+  writeProcessMemory(processHandle, allocatedRegion, buffer, buffer.byteLength)
+  virtualFreeEx(processHandle, allocatedRegion, 0)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[WriteProcessMemory](https://docs.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-writeprocessmemory)
+
