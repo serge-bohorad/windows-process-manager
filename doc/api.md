@@ -490,3 +490,35 @@ try {
 ```
 ### Useful references
 [GetModuleHandleW](https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulehandlew)
+
+## getProcAddress
+```typescript
+function getProcAddress(moduleHandle: Buffer, procName: string): Buffer {}
+```
+
+Retrieves the address of an exported function or variable from the specified dynamic-link library (DLL).
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Parameters
+
+#### Required
+*Buffer* `moduleHandle` - A handle to the DLL module that contains the function or variable.    
+*string* `procName` - The function or variable name, or the function's ordinal value.
+
+### Return value
+`Buffer` The address of the exported function or variable.
+
+### Example
+```javascript
+const { getModuleHandle, getProcAddress } = require('windows-process-manager')
+
+try {
+  const kernelHandle = getModuleHandle('kernel32.dll')
+  const VirtualProtectEx = getProcAddress(kernelHandle, 'VirtualProtectEx')
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[GetProcAddress](https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getprocaddress)
