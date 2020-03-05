@@ -250,7 +250,7 @@ Retrieves timing information for the specified process.
   - *Time* `creationTime` - The creation time of the process.
   - *Time* `exitTime` - The exit time of the process.
   - *Time* `kernelTime` - The amount of time that the process has executed in kernel mode.
-  - *Time* `userTime` - The amount of time that the process has executed in user mode
+  - *Time* `userTime` - The amount of time that the process has executed in user mode.
 
 ### Example
 ```javascript
@@ -667,3 +667,53 @@ try {
 ```
 ### Useful references
 [GetCurrentThreadId](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentthreadid)
+
+## getThreadTimes
+```typescript
+async function getThreadTimes(threadHandle: Buffer): Promise<Times> {}
+```
+
+Retrieves timing information for the specified thread.
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Parameters
+
+#### Required
+*Buffer* `threadHandle` - The thread handle. 
+
+### Return value
+`Promise<Times>` Thread times.
+
+`Time`
+  - *number* `year` - The year. 1601 through 30827.
+  - *number* `month` - The month. 1 through 12.
+  - *number* `dayOfWeek` - The day of the week. 0 through 6.
+  - *number* `day` - The day of the month. 1 through 31.
+  - *number* `hour` - The hour. 0 through 23.
+  - *number* `minute` - The minute. 0 through 59.
+  - *number* `second` - The second. 0 through 59.
+  - *number* `milliseconds` - The millisecond. 0 through 999. 
+  
+`Times`
+  - *Time* `creationTime` - The creation time of the thread.
+  - *Time* `exitTime` - The exit time of the thread.
+  - *Time* `kernelTime` - The amount of time that the thread has executed in kernel mode.
+  - *Time* `userTime` - The amount of time that the thread has executed in user mode.
+
+### Example
+```javascript
+const { getCurrentThreadHandle, getThreadTimes } = require('windows-process-manager')
+
+try {
+  const threadHandle = getCurrentThreadHandle()
+  const { creationTime } = await getThreadTimes(threadHandle)
+  const { hour, minute, second } = creationTime
+  console.log(`Creation time: ${hour}:${minute}:${second}`)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[GetThreadTimes](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getthreadtimes), 
+[SYSTEMTIME structure](https://docs.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-systemtime)
