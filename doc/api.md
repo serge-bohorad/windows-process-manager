@@ -426,3 +426,36 @@ try {
 ### Useful references
 [WriteProcessMemory](https://docs.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-writeprocessmemory)
 
+## readProcessMemory
+```typescript
+function readProcessMemory(processHandle: Buffer, baseAddress: Buffer, size: number): Buffer {}
+```
+
+Read memory of a specified process
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Parameters
+
+#### Required
+*Buffer* `processHandle` - A handle to the process.     
+*Buffer* `baseAddress` - The base address in the specified process from which to read.    
+*number* `size` - The number of bytes to be read from the specified process.
+
+### Return value
+`Buffer` The buffer of the contents from the address space of the specified process.
+
+### Example
+```javascript
+const { getCurrentProcessHandle, readProcessMemory } = require('windows-process-manager')
+
+try {
+  const address = Buffer.from('0000000032afc700', 'hex')
+  const processHandle = getCurrentProcessHandle()
+  const buffer = readProcessMemory(processHandle, address, 64)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[ReadProcessMemory](https://docs.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-readprocessmemory)
