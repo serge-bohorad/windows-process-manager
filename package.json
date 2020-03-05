@@ -1,7 +1,7 @@
 {
   "name": "windows-process-manager",
   "author": "Randell Hart (irandellhart@gmail.com)",
-  "version": "1.0.0-beta",
+  "version": "1.0.2-beta",
   "keywords": [
     "node",
     "native",
@@ -20,7 +20,9 @@
     "thread"
   ],
   "files": [
-    "out-tsc/dist"
+    "binding.gyp",
+    "out-tsc/dist",
+    "src/cpp"
   ],
   "repository": "git@github.com:iRandell/windows-process-manager.git",
   "homepage": "https://github.com/iRandell/windows-process-manager",
