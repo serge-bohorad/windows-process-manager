@@ -643,3 +643,27 @@ try {
 ```
 ### Useful references
 [GetCurrentThread](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentthread)
+
+## getCurrentThreadId
+```typescript
+function getCurrentThreadId(): number {}
+```
+
+Retrieves the thread identifier of the calling thread. 
+
+### Return value
+`number` The thread identifier of the calling thread.
+
+### Example
+```javascript
+const { getCurrentThreadId, openThread } = require('windows-process-manager')
+
+try {
+  const threadId = getCurrentThreadId()
+  const threadHandle = await openThread(threadId)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[GetCurrentThreadId](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentthreadid)
