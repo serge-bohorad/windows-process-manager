@@ -833,3 +833,43 @@ try {
 ```
 ### Useful references
 [SuspendThread](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-suspendthread)
+
+## resumeThread
+```typescript
+function resumeThread(threadHandle: Buffer): number {}
+```
+
+Resume the specified suspended thread.
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Parameters
+
+#### Required
+*Buffer* `threadHandle` - A handle to the thread to be restarted. 
+
+### Return value
+`number` The thread's previous suspend count.
+
+### Example
+```javascript
+const {
+  CREATE_SUSPENDED,
+  getCurrentProcessHandle,
+  createRemoteThread,
+  resumeThread
+} = require('windows-process-manager')
+
+try {
+  const emptyBuffer = Buffer.alloc(8)
+  const processHandle = getCurrentProcessHandle()
+  const { threadHandle } = await createRemoteThread(processHandle, emptyBuffer, {
+    flags: CREATE_SUSPENDED
+  })
+  resumeThread(threadHandle)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[ResumeThread](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-resumethread)
