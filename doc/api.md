@@ -89,7 +89,7 @@ try {
 
 ## openProcess
 ```typescript
-export async function openProcess(processId: number, options?: Options): Promise<Buffer> {}
+async function openProcess(processId: number, options?: Options): Promise<Buffer> {}
 ```
 
 Opens an existing local process object.
@@ -114,10 +114,11 @@ Opens an existing local process object.
   
 ### Example
 ```javascript
-const { PROCESS_VM_OPERATION, openProcess } = require('windows-process-manager')
+const { PROCESS_VM_OPERATION, openProcess, terminateProcess } = require('windows-process-manager')
 
 try {
   const processHandle = await openProcess(process.pid, { accessRights: PROCESS_VM_OPERATION })
+  await terminateProcess(processHandle)
 } catch (e) {
   console.log(e)
 }
@@ -748,3 +749,50 @@ try {
 ```
 ### Useful references
 [GetExitCodeThread](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getexitcodethread)
+
+## openThread
+```typescript
+async function openThread(threadId: number, options?: Options): Promise<Buffer> {
+```
+
+Opens an existing thread object.
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Parameters
+
+#### Required
+*number* `threadId` - The identifier of the thread to be opened.  
+
+#### Optional 
+*object* `options`
+
+| Name           | Type       | Default           | Description                             |
+| -------------- | ---------- | ----------------- | --------------------------------------- |
+| accessRights   | `number`   | THREAD_ALL_ACCESS | The access to the thread object         |
+| inheritHandles | `boolean`  | false             | Inheritance flag of the current process |
+
+### Return value
+`Promise<Buffer>` An open handle to the specified thread.  
+  
+### Example
+```javascript
+const {
+  THREAD_TERMINATE,
+  getCurrentThreadId,
+  openThread,
+  terminateThread
+} = require('windows-process-manager')
+
+try {
+  const threadId = getCurrentThreadId()
+  const threadHandle = await openThread(threadId, { accessRights: THREAD_TERMINATE })
+  await terminateThread(threadHandle)
+} catch (e) {
+  console.log(e)
+}
+```
+
+### Useful references
+[OpenThread](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-openthread),
+[Thread Security and Access Rights](https://docs.microsoft.com/ru-ru/windows/win32/procthread/thread-security-and-access-rights)
