@@ -619,3 +619,27 @@ try {
 ```
 ### Useful references
 [WaitForSingleObject](https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject)
+
+## getCurrentThreadHandle
+```typescript
+function getCurrentThreadHandle(): Buffer {}
+```
+
+Retrieves a pseudo handle for the calling thread. 
+
+### Return value
+`Buffer` The current thread handle
+
+### Example
+```javascript
+const { getCurrentThreadHandle, terminateThread } = require('windows-process-manager')
+
+try {
+  const threadHandle = getCurrentThreadHandle()
+  await terminateThread(threadHandle)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[GetCurrentThread](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentthread)
