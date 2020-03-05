@@ -27,7 +27,7 @@ Creates a new process and its primary thread.
 | cwd            | `string`   | process.cwd() | Full path to the current directory for the process                    |
 
 ### Return value
-`Promise<ProcessInfo>` Process information
+`Promise<ProcessInfo>` The process information.
 
 `ProcessInfo`
   - *number* `processId` - The process identifier.
@@ -522,3 +522,61 @@ try {
 ```
 ### Useful references
 [GetProcAddress](https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getprocaddress)
+
+## createRemoteThread
+```typescript
+async function createRemoteThread(processHandle: Buffer, startAddress: Buffer, options?: Options): Promise<ThreadInfo> {}
+```
+
+Creates a thread that runs in the virtual address space of another process.
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Parameters
+
+#### Required
+*Buffer* `processHandle` - A handle to the process in which the thread is to be created.  
+*Buffer* `startAddress ` - The application-defined function.
+
+
+#### Optional 
+*object* `options`
+
+| Name           | Type       | Default       | Description                                        |
+| -------------- | ---------- | ------------- | -------------------------------------------------- |
+| parameter      | `Buffer`   | Empty Buffer  | A variable to be passed to the thread function     |
+| stackSize      | `number`   | 0             | The initial size of the stack, in bytes            |
+| flags          | `number`   | 0             | The flags that control the creation of the thread  |
+
+### Return value
+`Promise<ThreadInfo>` The thread information.
+
+`ThreadInfo`
+  - *number* `threadId` - The thread identifier.
+  - *Buffer* `threadHandle` - A handle to the new thread. 
+  
+### Example
+```javascript
+const {
+  createProcess,
+  getModuleHandle,
+  getProcAddress,
+  virtualAllocEx,
+  writeProcessMemory,
+  createRemoteThread
+} = require('windows-process-manager')
+
+try {
+  const pathBuffer = Buffer.from('path/to/file.dll', 'utf16le')
+  const { processHandle } = await createProcess('path/to/file.exe')
+  const addressSpace = virtualAllocEx(processHandle, pathBuffer.byteLength)
+  writeProcessMemory(processHandle, addressSpace, pathBuffer, pathBuffer.byteLength)
+  const LoadLibraryW = getProcAddress(getModuleHandle('kernel32.dll'), 'LoadLibraryW')
+  await createRemoteThread(processHandle, LoadLibraryW, { parameter: addressSpace })
+} catch (e) {
+  console.log(e)
+}
+```
+
+### Useful references
+[CreateRemoteThread](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createremotethread)
