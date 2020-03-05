@@ -2,6 +2,33 @@
 
 > ⚠ All functions use the Unicode version of winapi. If you use a Buffer from a string, encode the buffer with **utf16le**.
 
+## Navigation
+- [createProcess](#createprocess)
+- [terminateProcess](#terminateprocess)
+- [openProcess](#openprocess)
+- [closeHandle](#closehandle)
+- [getProcessEntry](#getprocessentry)
+- [getCurrentProcessHandle](#getcurrentprocesshandle)
+- [getProcessTimes](#getprocesstimes)
+- [getExitCodeProcess](#getexitcodeprocess)
+- [virtualAllocEx](#virtualallocex)
+- [virtualFreeEx](#virtualfreeex)
+- [writeProcessMemory](#writeprocessmemory)
+- [readProcessMemory](#readprocessmemory)
+- [getModuleHandle](#getmodulehandle)
+- [getProcAddress](#getprocaddress)
+- [createRemoteThread](#createremotethread)
+- [waitForSingleObject](#waitforsingleobject)
+- [getCurrentThreadHandle](#getcurrentthreadhandle)
+- [getCurrentThreadId](#getcurrentthreadid)
+- [getThreadTimes](#getthreadtimes)
+- [getExitCodeThread](#getexitcodethread)
+- [openThread](#openthread)
+- [suspendThread](#suspendthread)
+- [resumeThread](#resumethread)
+- [terminateThread](#terminatethread)
+- [injectDll](#injectdll)
+
 ## createProcess
 ```typescript
 async function createProcess(exeFile: string, options?: Options): Promise<ProcessInfo> {}
