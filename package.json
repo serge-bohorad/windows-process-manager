@@ -44,7 +44,8 @@
     "build:cpp": "node-gyp rebuild",
     "debug:cpp": "node-gyp rebuild --debug",
     "clean:dist": "rimraf out-tsc/dist",
-    "clean:test": "rimraf out-tsc/test"
+    "clean:test": "rimraf out-tsc/test",
+    "prepublish": "npm-run-all test build"
   },
   "dependencies": {
     "bindings": "^1.5.0",
