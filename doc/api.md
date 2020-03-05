@@ -717,3 +717,34 @@ try {
 ### Useful references
 [GetThreadTimes](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getthreadtimes), 
 [SYSTEMTIME structure](https://docs.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-systemtime)
+
+## getExitCodeThread
+```typescript
+function getExitCodeThread(threadHandle: Buffer): number {}
+```
+
+Retrieves the termination status of the specified thread.
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Parameters
+
+#### Required
+*Buffer* `threadHandle` - A handle to the thread. 
+
+### Return value
+`number` Exit code.
+
+### Example
+```javascript
+const { getCurrentThreadHandle, getExitCodeThread } = require('windows-process-manager')
+
+try {
+  const threadHandle = getCurrentThreadHandle()
+  const exitCode = getExitCodeThread(threadHandle)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[GetExitCodeThread](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getexitcodethread)
