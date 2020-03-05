@@ -67,7 +67,7 @@ Terminates the specified process and all of its threads.
 *Buffer* `processHandle` - A handle to the process to be terminated. 
 
 #### Optional 
-*number* `exitCode` - The exit code to be used by the process and threads terminated as a result of this call.  
+*number* `exitCode` - The exit code to be used by the process and threads terminated as a result of this call.      
 **Default:** 0.
 
 ### Return value
@@ -362,7 +362,7 @@ Releases, decommits, or releases and decommits a region of memory within the vir
 *number* `size` - The size of the region of memory to free, in bytes. 
 
 #### Optional
-*number* `freeType` - The type of free operation.
+*number* `freeType` - The type of free operation.  
 **Default:** MEM_RELEASE.
 
 ### Return value
@@ -873,3 +873,38 @@ try {
 ```
 ### Useful references
 [ResumeThread](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-resumethread)
+
+## terminateThread
+```typescript
+async function terminateThread(threadHandle: Buffer, exitCode?: number): Promise<void> {}
+```
+
+Terminates the specified thread.
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Parameters
+
+#### Required
+*Buffer* `threadHandle` - A handle to the thread to be terminated. 
+
+#### Optional 
+*number* `exitCode` - The exit code for the thread.    
+**Default:** 0.
+
+### Return value
+`Promise<void>`
+
+### Example
+```javascript
+const { getCurrentThreadHandle, terminateThread } = require('windows-process-manager')
+
+try {
+  const threadHandle = getCurrentThreadHandle()
+  await terminateThread(threadHandle)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[TerminateThread](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-terminatethread)
