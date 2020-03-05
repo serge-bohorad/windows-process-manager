@@ -908,3 +908,47 @@ try {
 ```
 ### Useful references
 [TerminateThread](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-terminatethread)
+
+## injectDll
+```typescript
+async function injectDll(processId: number, dllFile: string, options?: Options): Promise<ThreadInfo> {}
+```
+
+Injects the specified Dynamic Link Library(DLL) into the specified process.
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Parameters
+
+#### Required
+*number* `processId` - The process identifier.    
+*string* `dllFile` - The full path to the specified DLL.      
+
+#### Optional 
+*object* `options`
+
+| Name           | Type       | Default  | Description                                                                      |
+| -------------- | ---------- | -------- | -------------------------------------------------------------------------------- |
+| waitingTimeout | `number`   | INFINITE | The time-out interval that the function waits until a new thread signaled or the interval elapses. |
+
+### Return value
+`Promise<ThreadInfo>` The thread information.
+
+`ThreadInfo`
+  - *number* `threadId` - The thread identifier.
+  - *Buffer* `threadHandle` - A handle to the new thread. 
+  
+### Example
+```javascript
+const { createProcess, injectDll, resumeThread } = require('windows-process-manager')
+
+try {
+  const { processId, threadHandle } = await createProcess('full/path/to/file.exe', {
+    flags: CREATE_SUSPENDED
+  })
+  await injectDll(processId, 'full/path/to/file.dll')
+  resumeThread(threadHandle)
+} catch (e) {
+  console.log(e)
+}
+```
