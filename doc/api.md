@@ -431,7 +431,7 @@ try {
 function readProcessMemory(processHandle: Buffer, baseAddress: Buffer, size: number): Buffer {}
 ```
 
-Read memory of a specified process
+Read memory of a specified process.
 
 **Note:** if the function failed, an exception will be thrown.
 
@@ -459,3 +459,34 @@ try {
 ```
 ### Useful references
 [ReadProcessMemory](https://docs.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-readprocessmemory)
+
+## getModuleHandle
+```typescript
+function getModuleHandle(moduleName: string): Buffer {}
+```
+
+Retrieves a module handle for the specified module.
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Parameters
+
+#### Required
+*string* `moduleName` - The name of the loaded module.     
+
+### Return value
+`Buffer` A handle to the specified module.
+
+### Example
+```javascript
+const { getModuleHandle, getProcAddress } = require('windows-process-manager')
+
+try {
+  const kernelHandle = getModuleHandle('kernel32.dll')
+  const CreateProcessW = getProcAddress(kernelHandle, 'CreateProcessW')
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[GetModuleHandleW](https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulehandlew)
