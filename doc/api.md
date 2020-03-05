@@ -796,3 +796,40 @@ try {
 ### Useful references
 [OpenThread](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-openthread),
 [Thread Security and Access Rights](https://docs.microsoft.com/ru-ru/windows/win32/procthread/thread-security-and-access-rights)
+
+## suspendThread
+```typescript
+function suspendThread(threadHandle: Buffer): number {}
+```
+
+Suspends the specified thread.
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Parameters
+
+#### Required
+*Buffer* `threadHandle` - A handle to the thread that is to be suspended. 
+
+### Return value
+`number` The thread's previous suspend count.
+
+### Example
+```javascript
+const {
+  getCurrentProcessHandle,
+  createRemoteThread,
+  suspendThread
+} = require('windows-process-manager')
+
+try {
+  const emptyBuffer = Buffer.alloc(8)
+  const processHandle = getCurrentProcessHandle()
+  const { threadHandle } = await createRemoteThread(processHandle, emptyBuffer)
+  suspendThread(threadHandle)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[SuspendThread](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-suspendthread)
