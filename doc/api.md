@@ -580,3 +580,42 @@ try {
 
 ### Useful references
 [CreateRemoteThread](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createremotethread)
+
+## waitForSingleObject
+```typescript
+async function waitForSingleObject(objectHandle: Buffer, milliseconds: number): Promise<number> {}
+```
+
+Waits until the specified object is in the signaled state or the time-out interval elapses.
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Parameters
+
+#### Required
+*Buffer* `objectHandle` - A handle to the object.    
+*number* `milliseconds` - The time-out interval.
+
+### Return value
+`Promise<number>` The event that caused the function to return
+
+### Example
+```javascript
+const {
+  INFINITE,
+  createProcess,
+  createRemoteThread,
+  waitForSingleObject
+} = require('windows-process-manager')
+
+try {
+  const emptyBuffer = Buffer.alloc(0)
+  const { processHandle } = await createProcess('path/to/file.exe')
+  const { threadHandle } = await createRemoteThread(processHandle, emptyBuffer)
+  await waitForSingleObject(threadHandle, INFINITE)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[WaitForSingleObject](https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject)
