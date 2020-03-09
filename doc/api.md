@@ -13,6 +13,7 @@
 - [getExitCodeProcess](#getexitcodeprocess)
 - [virtualAllocEx](#virtualallocex)
 - [virtualFreeEx](#virtualfreeex)
+- [virtualProtectEx](#virtualprotectex)
 - [writeProcessMemory](#writeprocessmemory)
 - [readProcessMemory](#readprocessmemory)
 - [getModuleHandle](#getmodulehandle)
@@ -411,6 +412,49 @@ try {
 
 ### Useful references
 [VirtualFreeEx](https://docs.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualfreeex)
+
+## virtualProtectEx
+```typescript
+function virtualProtectEx(processHandle: Buffer, address: Buffer, size: number, protectType: number): number {}
+```
+
+Changes the protection on a region of committed pages in the virtual address space of a specified process.
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Parameters
+
+#### Required
+*Buffer* `processHandle` - The process handle.   
+*Buffer* `address` - The base address of the region of pages.  
+*number* `size` - The size of the region whose access protection attributes are changed, in bytes.  
+*number* `protectType` - The memory protection for the region of pages.
+
+### Return value
+`number` Previous protection type of the region.
+  
+### Example
+```javascript
+const {
+  PAGE_READONLY,
+  PAGE_READWRITE,
+  getCurrentProcessHandle,
+  virtualAllocEx
+} = require('windows-process-manager')
+
+try {
+  const processHandle = getCurrentProcessHandle()
+  const addressSpace = virtualAllocEx(processHandle, 100, { protectType: PAGE_READONLY })
+  virtualProtectEx(processHandle, addressSpace, 100, PAGE_READWRITE)
+} catch (e) {
+  console.log(e)
+}
+
+```
+
+### Useful references
+[VirtualProtectEx](https://docs.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualprotectex),
+[Memory Protection Constants](https://docs.microsoft.com/ru-ru/windows/win32/memory/memory-protection-constants)
 
 ## writeProcessMemory
 ```typescript
