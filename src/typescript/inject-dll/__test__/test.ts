@@ -9,7 +9,7 @@ describe('injectDll', () => {
     const { processId } = await createProcess(exePath, { flags: CREATE_NEW_CONSOLE })
 
     return injectDll(processId, dllPath, { waitingTimeout: 0 }).then(result => {
-      expect(result).toMatchObject(threadInfo)
+      expect(result).toBeGreaterThan(0)
     })
   })
 

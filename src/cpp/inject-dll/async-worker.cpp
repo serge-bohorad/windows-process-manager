@@ -19,7 +19,6 @@ private:
   DWORD waitingTimeout;
 
   DWORD threadId;
-  HANDLE threadHandle;
 
 public:
   InjectDllWorker(
@@ -57,7 +56,7 @@ public:
 
     LPVOID LoadLibraryWide = reinterpret_cast<LPVOID>(GetProcAddress(GetModuleHandleA("kernel32.dll"), "LoadLibraryW"));
 
-    threadHandle = CreateRemoteThread(
+    HANDLE threadHandle = CreateRemoteThread(
         processHandle,
         NULL,
         NULL,
@@ -77,6 +76,7 @@ public:
     if (!waitingTimeout)
     {
       CloseHandle(processHandle);
+      CloseHandle(threadHandle);
       return;
     }
 
@@ -84,16 +84,12 @@ public:
 
     VirtualFreeEx(processHandle, addressSpace, 0, MEM_RELEASE);
     CloseHandle(processHandle);
+    CloseHandle(threadHandle);
   }
 
   void OnOK() override
   {
-    Object info = Object::New(Env());
-
-    info.Set("threadId", threadId);
-    info.Set("threadHandle", Buffer<HANDLE>::Copy(Env(), &threadHandle, 1));
-
-    deferred.Resolve(info);
+    deferred.Resolve(Number::New(Env(), threadId));
   }
 
   void OnError(const Error &error) override

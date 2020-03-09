@@ -1,7 +1,6 @@
 const pm = require('bindings')('windows-process-manager')
 
 import { Options } from './types'
-import { ThreadInfo } from '../create-remote-thread/types'
 
 import { INFINITE } from '../wait-for-single-object'
 
@@ -11,7 +10,7 @@ export async function injectDll(
   processId: number,
   dllFile: string,
   options?: Options
-): Promise<ThreadInfo> {
+): Promise<number> {
   if (!isNumber(processId)) {
     throw TypeError('Unable to inject dll! The first argument is not a number.')
   }
