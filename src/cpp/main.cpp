@@ -10,6 +10,7 @@
 #include "get-exit-code-process/main.cpp"
 #include "virtual-alloc-ex/main.cpp"
 #include "virtual-free-ex/main.cpp"
+#include "virtual-protect-ex/main.cpp"
 #include "write-process-memory/main.cpp"
 #include "read-process-memory/main.cpp"
 #include "get-module-handle/main.cpp"
@@ -69,6 +70,10 @@ Object init(Env env, Object exports)
   exports.Set(
       "virtualFreeEx",
       Function::New(env, NodeVirtualFreeEx::init));
+
+  exports.Set(
+      "virtualProtectEx",
+      Function::New(env, NodeVirtualProtectEx::init));
 
   exports.Set(
       "writeProcessMemory",
