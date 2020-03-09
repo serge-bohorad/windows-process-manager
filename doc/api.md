@@ -938,7 +938,7 @@ try {
 
 ## injectDll
 ```typescript
-async function injectDll(processId: number, dllFile: string, options?: Options): Promise<ThreadInfo> {}
+async function injectDll(processId: number, dllFile: string, options?: Options): Promise<number> {}
 ```
 
 Injects the specified Dynamic Link Library(DLL) into the specified process.
@@ -959,11 +959,7 @@ Injects the specified Dynamic Link Library(DLL) into the specified process.
 | waitingTimeout | `number`   | INFINITE | The time-out interval that the function waits until a new thread signaled or the interval elapses. |
 
 ### Return value
-`Promise<ThreadInfo>` The thread information.
-
-`ThreadInfo`
-  - *number* `threadId` - The thread identifier.
-  - *Buffer* `threadHandle` - A handle to the new thread. 
+`Promise<number>` The thread identifier.
   
 ### Example
 ```javascript
