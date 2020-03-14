@@ -21,7 +21,7 @@
   ],
   "files": [
     "binding.gyp",
-    "out-tsc/dist",
+    "dist",
     "src/cpp"
   ],
   "repository": "git@github.com:iRandell/windows-process-manager.git",
@@ -29,25 +29,21 @@
   "bugs": {
     "url": "https://github.com/iRandell/windows-process-manager/issues"
   },
-  "types": "out-tsc/dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "license": "MIT",
   "description": "Node.js native addon for working with processes on Windows",
-  "main": "out-tsc/dist/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "start": "npm-run-all clean:dist compile:dev",
     "build": "npm-run-all clean:dist compile:prod",
-    "start:test": "npm-run-all clean:test compile:test:dev",
-    "test": "npm-run-all clean:test compile:test build:cpp jest",
+    "test": "npm-run-all build:cpp jest",
     "compile:dev": "tsc -w",
     "compile:prod": "tsc -b",
-    "compile:test:dev": "tsc -w -p tsconfig.test.json",
-    "compile:test": "tsc -p tsconfig.test.json",
-    "jest": "jest",
     "build:cpp": "node-gyp rebuild",
     "debug:cpp": "node-gyp rebuild --debug",
-    "clean:dist": "rimraf out-tsc/dist",
-    "clean:test": "rimraf out-tsc/test",
-    "prepublish": "npm-run-all test build"
+    "clean:dist": "rimraf dist",
+    "jest": "jest",
+    "prepublishOnly": "npm-run-all test build"
   },
   "dependencies": {
     "bindings": "^1.5.0",
@@ -59,6 +55,7 @@
     "jest": "^25.1.0",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
+    "ts-jest": "^25.2.1",
     "typescript": "^3.8.2"
   },
   "peerDependencies": {
