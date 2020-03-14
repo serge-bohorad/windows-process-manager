@@ -1,4 +1,5 @@
 {
-  "bail": true,
-  "roots": ["<rootDir>/out-tsc/test"]
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "bail": true
 }
