@@ -2,6 +2,7 @@
 /tmp
 /out-tsc
 /build
+/dist
 
 # Runtime data
 pids
