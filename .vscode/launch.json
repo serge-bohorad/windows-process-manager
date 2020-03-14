@@ -7,7 +7,7 @@
       "name": "Debug x64",
       "preLaunchTask": "npm: debug:cpp",
       "program": "C:/Program Files/nodejs/node",
-      "args": ["${workspaceFolder}/out-tsc/dist/index.js"]
+      "args": ["${workspaceFolder}/dist/index.js"]
     }
   ]
 }

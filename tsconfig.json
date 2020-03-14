@@ -4,7 +4,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "CommonJS",
-    "outDir": "out-tsc/dist",
+    "outDir": "dist",
     "rootDir": "src/typescript",
     "moduleResolution": "node",
     "strictNullChecks": true,
