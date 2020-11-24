@@ -1,6 +1,6 @@
-> ⚠ Note that almost all functions may throw exceptions. If a function can throw exceptions, call function only in the **try catch** block, or use the **catch** if a function returns a promise.  
+> ⚠ Note that almost all functions may throw an exception. If a function throws an exception, call the function only in a **try catch** block, or use a **catch** function of Promise if it returns a promise.  
 
-> ⚠ All functions use the Unicode version of winapi. If you use a Buffer from a string, encode the buffer with **utf16le**.
+> ⚠ All functions uses Unicode version of winapi. If you are using a Buffer from a string, encode the buffer with **utf16le**.
 
 ## Navigation
 - [createProcess](#createprocess)
