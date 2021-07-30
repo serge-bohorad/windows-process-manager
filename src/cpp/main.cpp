@@ -8,6 +8,8 @@
 #include "get-current-process-handle/main.cpp"
 #include "get-process-times/main.cpp"
 #include "get-exit-code-process/main.cpp"
+#include "set-process-information/main.cpp"
+#include "set-thread-information/main.cpp"
 #include "virtual-alloc-ex/main.cpp"
 #include "virtual-free-ex/main.cpp"
 #include "virtual-protect-ex/main.cpp"
@@ -62,6 +64,20 @@ Object init(Env env, Object exports)
   exports.Set(
       "getExitCodeProcess",
       Function::New(env, NodeGetExitCodeProcess::init));
+
+  exports.Set(
+      "setProcessMemoryPriority",
+      Function::New(env, NodeSetProcessMemoryPriority::init));
+
+#if WINVER >= 0x0B00 // will be available in Windows 11
+  exports.Set(
+      "SetProcessPowerThrottling",
+      Function::New(env, NodeSetProcessPowerThrottling::init));
+#endif
+
+  exports.Set(
+      "setThreadMemoryPriority",
+      Function::New(env, NodeSetThreadMemoryPriority::init));
 
   exports.Set(
       "virtualAllocEx",

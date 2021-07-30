@@ -9,6 +9,7 @@
 - [closeHandle](#closehandle)
 - [getProcessEntry](#getprocessentry)
 - [getCurrentProcessHandle](#getcurrentprocesshandle)
+- [setProcessMemoryPriority](#setprocessmemorypriority)
 - [getProcessTimes](#getprocesstimes)
 - [getExitCodeProcess](#getexitcodeprocess)
 - [virtualAllocEx](#virtualallocex)
@@ -24,6 +25,7 @@
 - [getCurrentThreadId](#getcurrentthreadid)
 - [getThreadTimes](#getthreadtimes)
 - [getExitCodeThread](#getexitcodethread)
+- [setThreadMemoryPriority](#setthreadmemorypriority)
 - [openThread](#openthread)
 - [suspendThread](#suspendthread)
 - [resumeThread](#resumethread)
@@ -247,6 +249,43 @@ try {
 ```
 ### Useful references
 [GetCurrentProcess](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentprocess)
+
+## setProcessMemoryPriority
+```typescript
+function setProcessMemoryPriority(processHandle: Buffer, priority: number): void {}
+```
+
+Sets the memory priority of the Process. The following constants define the priorities:
+* MEMORY_PRIORITY_VERY_LOW (1)
+* MEMORY_PRIORITY_LOW (2)
+* MEMORY_PRIORITY_MEDIUM (3)
+* MEMORY_PRIORITY_BELOW_NORMAL (4)
+* MEMORY_PRIORITY_NORMAL (5)
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Parameters
+
+#### Required
+*Buffer* `processHandle` - A handle to the Process. 
+
+#### Required
+*number* `priority` - The memory priority.
+
+
+### Example
+```javascript
+const { getCurrentProcessHandle, setProcessMemoryPriority } = require('windows-process-manager')
+
+try {
+  const processHandle = getCurrentProcessHandle()
+  const exitCode = setProcessMemoryPriority(processHandle, MEMORY_PRIORITY_BELOW_NORMAL)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[SetProcessInformation](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setprocessinformation)
 
 ## getProcessTimes
 ```typescript
@@ -789,6 +828,43 @@ try {
 ### Useful references
 [GetThreadTimes](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getthreadtimes), 
 [SYSTEMTIME structure](https://docs.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-systemtime)
+
+## setThreadMemoryPriority
+```typescript
+function setThreadMemoryPriority(threadHandle: Buffer, priority: number): void {}
+```
+
+Sets the memory priority of the thread. The following constants define the priorities:
+* MEMORY_PRIORITY_VERY_LOW (1)
+* MEMORY_PRIORITY_LOW (2)
+* MEMORY_PRIORITY_MEDIUM (3)
+* MEMORY_PRIORITY_BELOW_NORMAL (4)
+* MEMORY_PRIORITY_NORMAL (5)
+
+**Note:** if the function failed, an exception will be thrown.
+
+### Parameters
+
+#### Required
+*Buffer* `threadHandle` - A handle to the thread. 
+
+#### Required
+*number* `priority` - The memory priority.
+
+
+### Example
+```javascript
+const { getCurrentThreadHandle, setThreadMemoryPriority } = require('windows-process-manager')
+
+try {
+  const threadHandle = getCurrentThreadHandle()
+  const exitCode = setThreadMemoryPriority(threadHandle, MEMORY_PRIORITY_BELOW_NORMAL)
+} catch (e) {
+  console.log(e)
+}
+```
+### Useful references
+[SetThreadInformation](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setthreadinformation)
 
 ## getExitCodeThread
 ```typescript
